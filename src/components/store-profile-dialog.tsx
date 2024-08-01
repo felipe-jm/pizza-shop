@@ -25,7 +25,7 @@ import { Textarea } from "./ui/textarea";
 
 const storeProfileSchema = z.object({
   name: z.string().min(1),
-  description: z.string(),
+  description: z.string().nullable(),
 });
 
 type StoreProfileSchema = z.infer<typeof storeProfileSchema>;
@@ -51,22 +51,38 @@ export function StoreProfileDialog() {
     },
   });
 
+  function updateManagedRestaurantCache({
+    name,
+    description,
+  }: StoreProfileSchema) {
+    const cached = queryClient.getQueryData<GetManagedRestaurantResponse>([
+      "managed-restaurant",
+    ]);
+
+    if (cached) {
+      queryClient.setQueryData<GetManagedRestaurantResponse>(
+        ["managed-restaurant"],
+        {
+          ...cached,
+          name,
+          description,
+        },
+      );
+    }
+
+    return { cached };
+  }
+
   const { mutateAsync: updateProfileFn } = useMutation({
     mutationFn: updateProfile,
-    onSuccess: (_, { name, description }) => {
-      const cached = queryClient.getQueryData<GetManagedRestaurantResponse>([
-        "managed-restaurant",
-      ]);
+    onMutate({ name, description }) {
+      const { cached } = updateManagedRestaurantCache({ name, description });
 
-      if (cached) {
-        queryClient.setQueryData<GetManagedRestaurantResponse>(
-          ["managed-restaurant"],
-          {
-            ...cached,
-            name,
-            description,
-          },
-        );
+      return { previousProfile: cached };
+    },
+    onError(_, __, context) {
+      if (context?.previousProfile) {
+        updateManagedRestaurantCache(context.previousProfile);
       }
     },
   });
@@ -78,9 +94,9 @@ export function StoreProfileDialog() {
         description: data.description,
       });
 
-      toast.success("Perfil atualizado com sucesso");
+      toast.success("Perfil atualizado com sucesso.");
     } catch (err) {
-      toast.error("Erro ao atualizar perfil");
+      toast.error("Erro ao atualizar perfil. Tente novamente.");
     }
   }
 
@@ -104,14 +120,14 @@ export function StoreProfileDialog() {
           </div>
 
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label
-              className="text-right"
-              htmlFor="description"
-              {...register("name")}
-            >
+            <Label className="text-right" htmlFor="description">
               Descrição
             </Label>
-            <Textarea className="col-span-3" id="description" />
+            <Textarea
+              className="col-span-3"
+              id="description"
+              {...register("description")}
+            />
           </div>
         </div>
 
