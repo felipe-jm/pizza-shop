@@ -36,8 +36,8 @@ export function Pagination({
           <Button
             variant="outline"
             className="h-8 w-8 p-0"
-            onClick={() => onPageChange(0)}
             disabled={pageIndex === 0}
+            onClick={() => onPageChange(0)}
           >
             <ChevronsLeft className="h-4 w-4" />
             <span className="sr-only">Primeira página</span>
@@ -46,20 +46,16 @@ export function Pagination({
             variant="outline"
             className="h-8 w-8 p-0"
             disabled={pageIndex === 0}
+            onClick={() => onPageChange(pageIndex - 1)}
           >
             <ChevronLeft className="h-4 w-4" />
-            <span
-              className="sr-only"
-              onClick={() => onPageChange(pageIndex - 1)}
-            >
-              Página anterior
-            </span>
+            <span className="sr-only">Página anterior</span>
           </Button>
           <Button
             variant="outline"
             className="h-8 w-8 p-0"
-            onClick={() => onPageChange(pageIndex + 1)}
             disabled={pages <= pageIndex + 1}
+            onClick={() => onPageChange(pageIndex + 1)}
           >
             <ChevronRight className="h-4 w-4" />
             <span className="sr-only">Próxima página</span>
@@ -67,8 +63,8 @@ export function Pagination({
           <Button
             variant="outline"
             className="h-8 w-8 p-0"
-            onClick={() => onPageChange(pages - 1)}
             disabled={pages <= pageIndex + 1}
+            onClick={() => onPageChange(pages - 1)}
           >
             <ChevronsRight className="h-4 w-4" />
             <span className="sr-only">Última página</span>
