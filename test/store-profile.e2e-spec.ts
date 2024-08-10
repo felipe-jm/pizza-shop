@@ -9,7 +9,7 @@ test("update profile successfully", async ({ page }) => {
   await page.getByLabel("Nome").fill("Rocket Pizza");
   await page.getByLabel("Descrição").fill("Another description");
 
-  await page.getByRole("menuitem", { name: "Salvar" }).click();
+  await page.getByRole("button", { name: "Salvar" }).click();
 
   await page.waitForLoadState("networkidle");
 
