@@ -8,7 +8,7 @@ export const getMonthCanceledOrdersAmountMock = http.get<
   GetMonthCanceledOrdersAmountResponse
 >("/metrics/month-canceled-orders-amount", () => {
   return HttpResponse.json({
-    amount: 200,
+    amount: 1,
     diffFromLastMonth: -10,
   });
 });

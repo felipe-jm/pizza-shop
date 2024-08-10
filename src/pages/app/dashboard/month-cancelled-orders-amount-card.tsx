@@ -9,7 +9,7 @@ import { MetricCardSkeleton } from "./metric-card-skeleton";
 export function MonthCancelledOrdersAmountCard() {
   const { data: monthCanceledOrdersAmount } = useQuery({
     queryFn: getMonthCanceledOrdersAmount,
-    queryKey: ["metrics", "month-orders-amount"],
+    queryKey: ["metrics", "month-canceled-orders-amount"],
   });
 
   return (
@@ -32,14 +32,14 @@ export function MonthCancelledOrdersAmountCard() {
                   <span className="text-emerald-500 dark:text-emerald-400">
                     {monthCanceledOrdersAmount.diffFromLastMonth}%
                   </span>{" "}
-                  em relação ao mês anterior
+                  em relação ao mês passado
                 </>
               ) : (
                 <>
                   <span className="text-rose-500 dark:text-rose-400">
                     +{monthCanceledOrdersAmount.diffFromLastMonth}%
                   </span>{" "}
-                  em relação ao mês anterior
+                  em relação ao mês passado
                 </>
               )}
             </p>
